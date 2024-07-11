@@ -34,6 +34,7 @@ router.post('/register', async (req, res) => {
     }
 });
 
+
 // User Login
 router.post('/login', async (req, res) => {
     const { username, password } = req.body;
@@ -65,6 +66,7 @@ router.post('/login', async (req, res) => {
     }
 });
 
+
 // Forget Password
 router.post('/forgot-password', async (req, res) => {
     const { email } = req.body;
@@ -82,13 +84,13 @@ router.post('/forgot-password', async (req, res) => {
         const transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
-                user: 'het.p4@ahduni.edu.in', // Replace with your email
-                pass: 'Hetpraj@1203'     // Replace with your app password if 2FA is enabled
+                user: 'het.p4@ahduni.edu.in',
+                pass: 'Hetpraj@1203'
             }
         });
 
         const mailOptions = {
-            from: 'het.p4@ahduni.edu.in', // Replace with your email
+            from: 'het.p4@ahduni.edu.in',
             to: user.email,
             subject: 'Password reset',
             text: `Click on this link to reset your password: http://localhost:5000/reset-password/${token}`
