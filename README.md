@@ -22,10 +22,12 @@ SocialMediaAPI is a Node.js application that provides RESTful APIs for managing 
 - **Nodemailer:** Module for sending emails for password recovery.
 - **HTML/CSS:** Frontend technologies for basic UI and layout.
 
-## Installation and Setup
-
-1. **Clone the repository:**
-
-   ```bash
-   git clone https://github.com/yourusername/SocialMediaAPI.git
-   cd SocialMediaAPI
+## API Endpoints
+- **/api/auth/register:** POST - Register a new user.
+- **/api/auth/login:** POST - Authenticate user and get token.
+- **/api/auth/forgot-password:** POST - Send email to reset password.
+- **/api/auth/reset-password:** POST - Reset user's password.
+- **/api/posts:** GET, POST - Manage posts.
+- **/api/posts/:id:** GET, PUT, DELETE - Manage a specific post by ID.
+- **/api/posts/like/:id:** PUT - Like a post.
+- **/api/posts/comment/:id:** POST - Add a comment to a post.
