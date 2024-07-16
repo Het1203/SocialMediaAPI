@@ -2,7 +2,9 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
+const config = require('config');
 const User = require('../models/user');
+const signToken = require('../middleware/auth').signToken;
 
 const router = express.Router();
 
@@ -35,7 +37,6 @@ router.post('/register', async (req, res) => {
 });
 
 
-// User Login
 router.post('/login', async (req, res) => {
     const { username, password } = req.body;
 
@@ -56,7 +57,7 @@ router.post('/login', async (req, res) => {
             }
         };
 
-        jwt.sign(payload, 'your_jwt_secret', { expiresIn: '1h' }, (err, token) => {
+        jwt.sign(payload, config.get('jwtSecret'), { expiresIn: '1h' }, (err, token) => {
             if (err) throw err;
             res.json({ token });
         });
@@ -65,7 +66,6 @@ router.post('/login', async (req, res) => {
         res.status(500).send('Server error');
     }
 });
-
 
 // Forget Password
 router.post('/forgot-password', async (req, res) => {
@@ -84,13 +84,13 @@ router.post('/forgot-password', async (req, res) => {
         const transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
-                user: 'het.p4@ahduni.edu.in',
-                pass: 'Hetpraj@1203'
+                user: process.env.EMAIL,
+                pass: process.env.PASSWORD
             }
         });
 
         const mailOptions = {
-            from: 'het.p4@ahduni.edu.in',
+            from: process.env.EMAIL,
             to: user.email,
             subject: 'Password reset',
             text: `Click on this link to reset your password: http://localhost:5000/reset-password/${token}`

@@ -1,23 +1,26 @@
+// server.js
 const express = require('express');
-const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
 const path = require('path');
+require('dotenv').config();
+const connectDB = require('./config/db');
 
 const app = express();
-app.use(bodyParser.json());
 
-mongoose.connect('mongodb://127.0.0.1:27017/secureloginapi')
-    .then(() => console.log('MongoDB connected'))
-    .catch(err => console.log(err));
+// Connect Database
+connectDB();
+
+// Init Middleware
+app.use(express.json({ extended: false }));
 
 // Serve static files from the public directory
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Import routes
-const authRoutes = require('./routes/auth');
-app.use('/api/auth', authRoutes);
+app.get('/', (req, res) => res.send('API Running'));
+
+// Define Routes
+app.use('/api/auth', require('./routes/auth'));
+app.use('/api/posts', require('./routes/posts'));
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-});
+
+app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
